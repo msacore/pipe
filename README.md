@@ -77,8 +77,8 @@ Build multithread tools easily.
 > If one of input channels is closed then output channel is closed.
 > All other input channels will be read till end in background.
 
-- `Input` multiple of T
-- `Output` single of T
+- `Input` multiple of T1
+- `Output` single of T2
 - `Capacity` Minimal of inputs
 - `Closing` Any of input channels closed
 
@@ -103,5 +103,17 @@ Build multithread tools easily.
 
 - `Input` single of T
 - `Output` single of T
+- `Capacity` Same as the input
+- `Closing` Input closed
+
+### Reduce
+
+![Reduce](assets/methods/reduce.svg)
+
+> Take several next messages from input and send new message to output.
+> > If input channel is closed then all output channels are closed.
+
+- `Input` single of T1
+- `Output` single of T2
 - `Capacity` Same as the input
 - `Closing` Input closed
