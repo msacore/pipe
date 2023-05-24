@@ -103,7 +103,7 @@ Build multithread tools easily.
 
 - `Input` single of T
 - `Output` single of T
-- `Capacity` Same as the input
+- `Capacity` Input multiplied by N
 - `Closing` Input closed
 
 ### Reduce

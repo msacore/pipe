@@ -19,7 +19,7 @@
         <line class="pipe pipe-close-1" id="pipe-in-center" x1="50" y1="80" x2="50" y2="50" />
         <!-- <line class="pipe" id="pipe-in-right" x1="80" y1="80" x2="50" y2="50" /> -->
         <!-- <line class="pipe" id="pipe-out-left" x1="50" y1="50" x2="20" y2="20" /> -->
-        <line class="pipe pipe-close-2" id="pipe-out-center" x1="50" y1="50" x2="50" y2="20" />
+        <line class="pipe pipe-close-2 pipe-bold" id="pipe-out-center" x1="50" y1="50" x2="50" y2="20" />
         <!-- <line class="pipe" id="pipe-out-right" x1="50" y1="50" x2="80" y2="20" /> -->
     </g>
     <g id="messages">
