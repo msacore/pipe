@@ -1,0 +1,410 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="background">
+        <rect width="100" height="100" rx="20" fill="#263238" />
+        <rect x="1" y="1" width="98" height="98" rx="19" stroke="white" stroke-opacity="0.1"
+            stroke-width="2" />
+    </g>
+    <text id="title">Split</text>
+    <g id="pipes">
+        <!--
+            Uncomment incoming and outgoing pipes and improve their with classes:
+            pipe - main class to style pipe
+            pipe-shadow - make pipe dotted
+            pipe-bold - make pipe bold
+            pipe-thin - make pipe thin
+            pipe-close-1 - close pipe first
+            pipe-close-2 - close pipe second
+            pipe-close-3 - close pipe third
+        -->
+        <!-- <line class="pipe" id="pipe-in-left" x1="20" y1="80" x2="50" y2="50" /> -->
+        <line class="pipe pipe-close-1" id="pipe-in-center" x1="50" y1="80" x2="50" y2="50" />
+        <!-- <line class="pipe" id="pipe-in-right" x1="80" y1="80" x2="50" y2="50" /> -->
+        <line class="pipe pipe-close-2" id="pipe-out-left" x1="50" y1="50" x2="20" y2="20" />
+        <!-- <line class="pipe" id="pipe-out-center" x1="50" y1="50" x2="50" y2="20" /> -->
+        <line class="pipe pipe-close-2" id="pipe-out-right" x1="50" y1="50" x2="80" y2="20" />
+    </g>
+    <g id="messages">
+        <!--
+            Create as many messages as you like. Next classes will help with animation:
+            msg - main class to style message
+            msg-in-[left|center|right] - direction for incoming messages
+            msg-out-[left|center|right] - direction for outgoing messages
+            msg-variant - another type of message
+            msg-discard - discarded message
+            msg-delay-1 - animate message with delay
+            msg-delay-2 - animate message with 2 times longer delay
+            msg-delay-3 - animate message with 3 times longer delay
+        -->
+        <circle class="msg msg-in-center" />
+        <circle class="msg msg-out-left" />
+        <circle class="msg msg-out-right" />
+    </g>
+    <style>
+        svg {
+        --color-primary: #FFFFFF;
+        --color-secondary: #00AAFF;
+        --color-tertiary: #FF00FF;
+        }
+
+        #title {
+        font: 9px monospace;
+        transform: rotate(0deg) translate(50px, 95px);
+        filter: opacity(0.5);
+        text-anchor: middle;
+        fill: var(--color-primary);
+        }
+
+        /* Pipes */
+
+        .pipe {
+        stroke: var(--color-secondary);
+        stroke-width: 4;
+        stroke-linecap: round;
+        }
+
+        .pipe-shadow {
+        stroke-dasharray: 1, 8;
+        }
+
+        .pipe-bold {
+        stroke-width: 8;
+        }
+
+        .pipe-thin {
+        stroke-width: 2;
+        }
+
+        /* Messages */
+
+        .msg {
+        r: 6;
+        fill: var(--color-primary);
+        }
+
+        .msg-discard {
+        filter: opacity(0.5);
+        }
+
+        .msg-variant {
+        fill: var(--color-tertiary);
+        }
+
+        .msg-delay-1 {
+        animation-delay: 0.5s !important;
+        }
+
+        .msg-delay-2 {
+        animation-delay: 1s !important;
+        }
+
+        .msg-delay-3 {
+        animation-delay: 1.5s !important;
+        }
+
+        /* Animations Pipes */
+
+        .pipe-close-1 {
+        animation: pipe-close-1-anim 6s infinite ease-out;
+        }
+
+        @keyframes pipe-close-1-anim {
+        0% {
+        filter: opacity(1);
+        }
+
+        10% {
+        filter: opacity(0.3);
+        }
+
+        50% {
+        filter: opacity(0.3);
+        }
+
+        60% {
+        filter: opacity(1);
+        }
+
+        100% {
+        filter: opacity(1);
+        }
+        }
+
+        .pipe-close-2 {
+        animation: pipe-close-2-anim 6s infinite ease-out;
+        }
+
+        @keyframes pipe-close-2-anim {
+        0% {
+        filter: opacity(1);
+        }
+
+        10% {
+        filter: opacity(1);
+        }
+
+        20% {
+        filter: opacity(0.3);
+        }
+
+        50% {
+        filter: opacity(0.3);
+        }
+
+        60% {
+        filter: opacity(1);
+        }
+
+        100% {
+        filter: opacity(1);
+        }
+        }
+
+        .pipe-close-3 {
+        animation: pipe-close-3-anim 6s infinite ease-out;
+        }
+
+        @keyframes pipe-close-3-anim {
+        0% {
+        filter: opacity(1);
+        }
+
+        20% {
+        filter: opacity(1);
+        }
+
+        30% {
+        filter: opacity(0.3);
+        }
+
+        50% {
+        filter: opacity(0.3);
+        }
+
+        60% {
+        filter: opacity(1);
+        }
+
+        100% {
+        filter: opacity(1);
+        }
+        }
+
+        /* Animations Messages */
+
+        .msg-in-left {
+        animation: msg-in-left-anim 3s infinite ease-out;
+        }
+
+        @keyframes msg-in-left-anim {
+        0% {
+        opacity: 0;
+        cx: 20;
+        cy: 80;
+        }
+
+        20% {
+        opacity: 1;
+        cx: 20;
+        cy: 80;
+        }
+
+        50% {
+        opacity: 1;
+        cx: 50;
+        cy: 50;
+        }
+
+        60% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        100% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+        }
+
+        .msg-in-center {
+        animation: msg-in-center-anim 3s infinite ease-out;
+        }
+
+        @keyframes msg-in-center-anim {
+        0% {
+        opacity: 0;
+        cx: 50;
+        cy: 80;
+        }
+
+        20% {
+        opacity: 1;
+        cx: 50;
+        cy: 80;
+        }
+
+        50% {
+        opacity: 1;
+        cx: 50;
+        cy: 50;
+        }
+
+        60% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        100% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+        }
+
+        .msg-in-right {
+        animation: msg-in-right-anim 3s infinite ease-out;
+        }
+
+        @keyframes msg-in-right-anim {
+        0% {
+        opacity: 0;
+        cx: 80;
+        cy: 80;
+        }
+
+        20% {
+        opacity: 1;
+        cx: 80;
+        cy: 80;
+        }
+
+        50% {
+        opacity: 1;
+        cx: 50;
+        cy: 50;
+        }
+
+        60% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        100% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+        }
+
+        .msg-out-left {
+        animation: msg-out-left-anim 3s infinite ease-out;
+        }
+
+        @keyframes msg-out-left-anim {
+        0% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        50% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        60% {
+        opacity: 1;
+        cx: 50;
+        cy: 50;
+        }
+
+        90% {
+        opacity: 1;
+        cx: 20;
+        cy: 20;
+        }
+
+        100% {
+        opacity: 0;
+        cx: 20;
+        cy: 20;
+        }
+        }
+
+        .msg-out-center {
+        animation: msg-out-center-anim 3s infinite ease-out;
+        }
+
+        @keyframes msg-out-center-anim {
+        0% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        50% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        60% {
+        opacity: 1;
+        cx: 50;
+        cy: 50;
+        }
+
+        90% {
+        opacity: 1;
+        cx: 50;
+        cy: 20;
+        }
+
+        100% {
+        opacity: 0;
+        cx: 50;
+        cy: 20;
+        }
+        }
+
+        .msg-out-right {
+        animation: msg-out-right-anim 3s infinite ease-out;
+        }
+
+        @keyframes msg-out-right-anim {
+        0% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        50% {
+        opacity: 0;
+        cx: 50;
+        cy: 50;
+        }
+
+        60% {
+        opacity: 1;
+        cx: 50;
+        cy: 50;
+        }
+
+        90% {
+        opacity: 1;
+        cx: 80;
+        cy: 20;
+        }
+
+        100% {
+        opacity: 0;
+        cx: 80;
+        cy: 20;
+        }
+        }
+    </style>
+</svg>
