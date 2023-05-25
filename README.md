@@ -32,6 +32,46 @@ Take message and convert it into another type by map function.
 If input channel is closed then output channel is closed.
 Creates a new channel with the same capacity as input.
 
+<details> 
+  <summary>Usage example</summary>
+
+```go
+// input := make(chan int, 4) with random values.
+// Say, the input contains [1, 2, 3]
+
+// Parallel strategy
+// Best performance (Multiple goroutines)
+
+output := Map(input, func(value int) string { 
+    fmt.Print(value)
+    return fmt.Sprintf("val: %d", value) 
+})
+// stdout: 2 1 3
+// output: ["val: 2", "val: 1", "val: 3"] 
+
+// Sync strategy
+// Consistent ordering (Multiple goroutines with sequential output)
+
+output := MapSync(input, func(value int) string { 
+    fmt.Print(value)
+    return fmt.Sprintf("val: %d", value) 
+})
+// stdout: 2 1 3
+// output: ["val: 1", "val: 2", "val: 3"] 
+
+// Sequential strategy
+// Preventing thread race (Single goroutine)
+
+output := MapSequential(input, func(value int) string { 
+    fmt.Print(value)
+    return fmt.Sprintf("val: %d", value) 
+})
+// stdout: 1 2 3
+// output: ["val: 1", "val: 2", "val: 3"] 
+```
+
+</details>
+
 ### Filter
 
 ![Filter](assets/methods/filter.svg)
