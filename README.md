@@ -23,6 +23,65 @@ Build multithread tools easily.
 - Thread safe
 - `io` and `lo` like syntax (Tee, Reduce, Map, etc) but concurrently
 
+## :building_construction: Methods
+
+### [Map](map.go)
+
+![Map](assets/methods/map.svg)
+
+:arrows_counterclockwise:
+[![Parallel]](#parallel)
+[![Sync]](#sync)
+[![Sequential]](#sequential)
+:lock:
+[![Single]](#single)
+:package:
+[![Same]](#same)
+
+Take message and convert it into another type by map function.
+If input channel is closed then output channel is closed.
+Creates a new channel with the same capacity as input.
+
+<details> 
+  <summary>Usage example</summary>
+
+```go
+// input := make(chan int, 4) with random values.
+// Say, the input contains [1, 2, 3]
+
+// Parallel strategy
+// Best performance (Multiple goroutines)
+
+output := Map(func(value int) string { 
+    fmt.Print(value)
+    return fmt.Sprintf("val: %d", value) 
+}, input)
+// stdout: 2 1 3
+// output: ["val: 2", "val: 1", "val: 3"] 
+
+// Sync strategy
+// Consistent ordering (Multiple goroutines with sequential output)
+
+output := MapSync(func(value int) string { 
+    fmt.Print(value)
+    return fmt.Sprintf("val: %d", value) 
+}, input)
+// stdout: 2 1 3
+// output: ["val: 1", "val: 2", "val: 3"] 
+
+// Sequential strategy
+// Preventing thread race (Single goroutine)
+
+output := MapSequential(func(value int) string { 
+    fmt.Print(value)
+    return fmt.Sprintf("val: %d", value) 
+}, input)
+// stdout: 1 2 3
+// output: ["val: 1", "val: 2", "val: 3"] 
+```
+
+</details>
+
 ## :gear: Strategies
 
 Each function has own set of strategies from all categories.
@@ -95,66 +154,7 @@ The output channels will have a capacity equal to the maximum capacity of the in
 ![Sum]  
 The output channels will have a capacity equal to the sum of capacities of the input channels.
 
-## :building_construction: Methods
-
-### [Map](map.go)
-
-![Map](assets/methods/map.svg)
-
-:arrows_counterclockwise:
-[![Parallel]](#parallel)
-[![Sync]](#sync)
-[![Sequential]](#sequential)
-:lock:
-[![Single]](#single)
-:package:
-[![Same]](#same)
-
-Take message and convert it into another type by map function.
-If input channel is closed then output channel is closed.
-Creates a new channel with the same capacity as input.
-
-<details> 
-  <summary>Usage example</summary>
-
-```go
-// input := make(chan int, 4) with random values.
-// Say, the input contains [1, 2, 3]
-
-// Parallel strategy
-// Best performance (Multiple goroutines)
-
-output := Map(func(value int) string { 
-    fmt.Print(value)
-    return fmt.Sprintf("val: %d", value) 
-}, input)
-// stdout: 2 1 3
-// output: ["val: 2", "val: 1", "val: 3"] 
-
-// Sync strategy
-// Consistent ordering (Multiple goroutines with sequential output)
-
-output := MapSync(func(value int) string { 
-    fmt.Print(value)
-    return fmt.Sprintf("val: %d", value) 
-}, input)
-// stdout: 2 1 3
-// output: ["val: 1", "val: 2", "val: 3"] 
-
-// Sequential strategy
-// Preventing thread race (Single goroutine)
-
-output := MapSequential(func(value int) string { 
-    fmt.Print(value)
-    return fmt.Sprintf("val: %d", value) 
-}, input)
-// stdout: 1 2 3
-// output: ["val: 1", "val: 2", "val: 3"] 
-```
-
-</details>
-
-## Under Construction Section (DRAFT)
+## === DRAFT ===
 
 <details> 
   <summary><b>Under Construction</b></summary>
