@@ -14,13 +14,85 @@
 
 # pipe
 
+> **Warning**  
+> This module under rapid development
+
 Power of Go channels with io.Pipe usability.
 Build multithread tools easily.
 
 - Thread safe
 - `io` and `lo` like syntax (Tee, Reduce, Map, etc) but concurrently
 
-## Pipeline Methods
+## Strategies
+
+### Processing
+
+Some functions have different channel processing algorithms. To ensure maximum performance, it is recommended to use the original function. However, specific algorithms can help in cases where you are faced with a race of threads or you need to output data strictly in the same order in which you received them.
+
+#### Parallel
+
+![Parallel]  
+Each handler is executed in its own goroutine and there is no guarantee that the output order will be consistent. Recommended for best performance.
+
+#### Sync
+
+![Sync]  
+Each handler executes in its own goroutine, but the result of the youngest goroutine waits for the oldest goroutine to finish before being passed to the output stream. To prevent memory leaks, the strategy will wait if there is more waiting data than the capacity of the output channel. Recommended if you want to get the output data in the same order as the input data.
+
+#### Sequential
+
+![Sequential]  
+Each handler is executed sequentially, one after the other. Keeps the order of the output data equal to the order of the input data. Recommended if it is necessary to exclude the race of threads between handlers.
+
+### Closing
+
+Each function has one of several strategies for closing output channels. Understanding will help you understand how and when your pipeline closes.
+
+#### Single
+
+![Single]  
+Suitable only for functions with one input. If the input channel is closed, then the output channels are closed.
+
+#### All
+
+![All]  
+If all input channels are closed, then the output channels are closed.
+
+#### Any
+
+![Any]  
+If one of the input channels is closed, the output channels are closed. All other channels will be read to the end in the background.
+
+### Capacity
+
+Each function creates new output channels with the capacity corresponding to a specific strategy.
+
+#### Same
+
+![Same]  
+Suitable only for functions with one input channel. The output channels will have a capacity equal to the input channel.
+
+#### Mult
+
+![Mult] 
+Suitable only for functions with one input channel. The output channels will have a capacity equal to the input channel multiplied by N.
+
+#### Min
+
+![Min]  
+The output channels will have a capacity equal to the minimum capacity of the input channels.
+
+#### Max
+
+![Max]  
+The output channels will have a capacity equal to the maximum capacity of the input channels.
+
+#### Sum
+
+![Sum]  
+The output channels will have a capacity equal to the sum of capacities of the input channels.
+
+## Methods
 
 ### [Map](map.go)
 
@@ -74,7 +146,7 @@ output := MapSequential(func(value int) string {
 
 ### Filter
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Filter](assets/methods/filter.svg)
@@ -87,7 +159,7 @@ Creates a new channel with the same capacity as input.
 
 ### Split
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Split](assets/methods/split.svg)
@@ -100,7 +172,7 @@ Creates new channels with the same capacity as input.
 
 ### Spread
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Spread](assets/methods/spread.svg)
@@ -114,7 +186,7 @@ Creates new channels with the same capacity as input.
 
 ### Join
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Join](assets/methods/join.svg)
@@ -127,7 +199,7 @@ Creates new channel with sum of capacities of input channels.
 
 ### Merge
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Merge](assets/methods/merge.svg)
@@ -141,7 +213,7 @@ Creates new channel with minimal capacity of input channels.
 
 ### Route
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Route](assets/methods/route.svg)
@@ -154,7 +226,7 @@ Creates new channels with the same capacity as input.
 
 ### Replicate
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Replicate](assets/methods/replicate.svg)
@@ -167,7 +239,7 @@ Creates new channel with the same capacity as input multiplied by N.
 
 ### Reduce
 
-> **Warning**
+> **Warning**  
 > This function under construction
 
 ![Reduce](assets/methods/reduce.svg)

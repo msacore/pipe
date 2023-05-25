@@ -34,7 +34,7 @@
 //
 // Each function creates new output channels with the capacity corresponding to a specific strategy.
 //
-//   - Exact - Suitable only for functions with one input channel. The output channels will have a capacity equal to
+//   - Same - Suitable only for functions with one input channel. The output channels will have a capacity equal to
 //     the input channel.
 //   - Mult - Suitable only for functions with one input channel. The output channels will have a capacity equal to
 //     the input channel multiplied by N.
