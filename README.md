@@ -43,7 +43,7 @@ If input channel is closed then output channel is closed.
 Creates a new channel with the same capacity as input.
 
 <details> 
-  <summary>Usage example</summary>
+  <summary>Usage examples</summary>
 
 ```go
 // input := make(chan int, 4) with random values.
