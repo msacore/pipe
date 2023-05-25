@@ -22,7 +22,7 @@ Build multithread tools easily.
 
 ## Pipeline Methods
 
-### Map
+### [Map](map.go)
 
 ![Map](assets/methods/map.svg)
 
@@ -74,6 +74,8 @@ output := MapSequential(input, func(value int) string {
 
 ### Filter
 
+> Warning: This function under construction
+
 ![Filter](assets/methods/filter.svg)
 
 ![Parallel] ![Sync] ![Sequential] ![Single] ![Same]
@@ -84,6 +86,8 @@ Creates a new channel with the same capacity as input.
 
 ### Split
 
+> Warning: This function under construction
+
 ![Split](assets/methods/split.svg)
 
 ![Sequential] ![Single] ![Same]
@@ -93,6 +97,8 @@ If input channel is closed then all output channels are closed.
 Creates new channels with the same capacity as input.
 
 ### Spread
+
+> Warning: This function under construction
 
 ![Spread](assets/methods/spread.svg)
 
@@ -105,6 +111,8 @@ Creates new channels with the same capacity as input.
 
 ### Join
 
+> Warning: This function under construction
+
 ![Join](assets/methods/join.svg)
 
 ![Sequential] ![All] ![Sum]
@@ -114,6 +122,8 @@ If all input channels are closed then output channel is closed.
 Creates new channel with sum of capacities of input channels.
 
 ### Merge
+
+> Warning: This function under construction
 
 ![Merge](assets/methods/merge.svg)
 
@@ -126,6 +136,8 @@ Creates new channel with minimal capacity of input channels.
 
 ### Route
 
+> Warning: This function under construction
+
 ![Route](assets/methods/route.svg)
 
 ![Parallel] ![Sync] ![Sequential] ![Single] ![Same]
@@ -136,6 +148,8 @@ Creates new channels with the same capacity as input.
 
 ### Replicate
 
+> Warning: This function under construction
+
 ![Replicate](assets/methods/replicate.svg)
 
 ![Sequential] ![Single] ![Mult]
@@ -145,6 +159,8 @@ If input channel is closed then all output channels are closed.
 Creates new channel with the same capacity as input multiplied by N.
 
 ### Reduce
+
+> Warning: This function under construction
 
 ![Reduce](assets/methods/reduce.svg)
 
