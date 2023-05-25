@@ -23,9 +23,12 @@ Build multithread tools easily.
 - Thread safe
 - `io` and `lo` like syntax (Tee, Reduce, Map, etc) but concurrently
 
-## Strategies
+## :gear: Strategies
 
-### Processing
+Each function has own set of strategies from all categories.
+It describes how your channel data `processing`, when channels `closing`, and how calculate `capacity` of output channels.
+
+### :arrows_counterclockwise: Processing
 
 Some functions have different channel processing algorithms. To ensure maximum performance, it is recommended to use the original function. However, specific algorithms can help in cases where you are faced with a race of threads or you need to output data strictly in the same order in which you received them.
 
@@ -44,7 +47,7 @@ Each handler executes in its own goroutine, but the result of the youngest gorou
 ![Sequential]  
 Each handler is executed sequentially, one after the other. Keeps the order of the output data equal to the order of the input data. Recommended if it is necessary to exclude the race of threads between handlers.
 
-### Closing
+### :lock: Closing
 
 Each function has one of several strategies for closing output channels. Understanding will help you understand how and when your pipeline closes.
 
@@ -63,7 +66,7 @@ If all input channels are closed, then the output channels are closed.
 ![Any]  
 If one of the input channels is closed, the output channels are closed. All other channels will be read to the end in the background.
 
-### Capacity
+### :package: Capacity
 
 Each function creates new output channels with the capacity corresponding to a specific strategy.
 
@@ -92,13 +95,20 @@ The output channels will have a capacity equal to the maximum capacity of the in
 ![Sum]  
 The output channels will have a capacity equal to the sum of capacities of the input channels.
 
-## Methods
+## :building_construction: Methods
 
 ### [Map](map.go)
 
 ![Map](assets/methods/map.svg)
 
-![Parallel] ![Sync] ![Sequential] ![Single] ![Same]
+:arrows_counterclockwise:
+[![Parallel]](#parallel)
+[![Sync]](#sync)
+[![Sequential]](#sequential)
+:lock:
+[![Single]](#single)
+:package:
+[![Same]](#same)
 
 Take message and convert it into another type by map function.
 If input channel is closed then output channel is closed.
@@ -143,6 +153,11 @@ output := MapSequential(func(value int) string {
 ```
 
 </details>
+
+## Under Construction Section (DRAFT)
+
+<details> 
+  <summary><b>Under Construction</b></summary>
 
 ### Filter
 
@@ -249,3 +264,5 @@ Creates new channel with the same capacity as input multiplied by N.
 Take several next messages from input and send new message to output.
 If input channel is closed then all output channels are closed.
 Creates new channel with the same capacity as input.
+
+</details>
