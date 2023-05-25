@@ -27,16 +27,16 @@
 //   - Single - Suitable only for functions with one input. If the input channel is closed, then the output channels
 //     are closed.
 //   - All - If all input channels are closed, then the output channels are closed.
-//   - One - If one of the input channels is closed, the output channels are closed. All other channels will be read
+//   - Any - If one of the input channels is closed, the output channels are closed. All other channels will be read
 //     to the end in the background.
 //
 // # Capacity Strategies
 //
 // Each function creates new output channels with the capacity corresponding to a specific strategy.
 //
-//   - Same - Suitable only for functions with one input channel. The output channels will have a capacity equal to
+//   - Exact - Suitable only for functions with one input channel. The output channels will have a capacity equal to
 //     the input channel.
-//   - SameN - Suitable only for functions with one input channel. The output channels will have a capacity equal to
+//   - Mult - Suitable only for functions with one input channel. The output channels will have a capacity equal to
 //     the input channel multiplied by N.
 //   - Min - The output channels will have a capacity equal to the minimum capacity of the input channels.
 //   - Max - The output channels will have a capacity equal to the maximum capacity of the input channels.
