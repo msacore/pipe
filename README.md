@@ -42,30 +42,30 @@ Creates a new channel with the same capacity as input.
 // Parallel strategy
 // Best performance (Multiple goroutines)
 
-output := Map(input, func(value int) string { 
+output := Map(func(value int) string { 
     fmt.Print(value)
     return fmt.Sprintf("val: %d", value) 
-})
+}, input)
 // stdout: 2 1 3
 // output: ["val: 2", "val: 1", "val: 3"] 
 
 // Sync strategy
 // Consistent ordering (Multiple goroutines with sequential output)
 
-output := MapSync(input, func(value int) string { 
+output := MapSync(func(value int) string { 
     fmt.Print(value)
     return fmt.Sprintf("val: %d", value) 
-})
+}, input)
 // stdout: 2 1 3
 // output: ["val: 1", "val: 2", "val: 3"] 
 
 // Sequential strategy
 // Preventing thread race (Single goroutine)
 
-output := MapSequential(input, func(value int) string { 
+output := MapSequential(func(value int) string { 
     fmt.Print(value)
     return fmt.Sprintf("val: %d", value) 
-})
+}, input)
 // stdout: 1 2 3
 // output: ["val: 1", "val: 2", "val: 3"] 
 ```

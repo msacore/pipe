@@ -15,13 +15,13 @@ import "sync"
 // # Usages
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
-//	output := Map(input, func(value int) string {
+//	output := Map(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
-//	})
+//	}, input)
 //	// stdout: 2 1 3
 //	// output: ["val: 2", "val: 1", "val: 3"]
-func Map[Tin, Tout any](in <-chan Tin, mapper func(Tin) Tout) <-chan Tout {
+func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 	out := make(chan Tout, cap(in))
 	wg := sync.WaitGroup{}
 
@@ -57,13 +57,13 @@ func Map[Tin, Tout any](in <-chan Tin, mapper func(Tin) Tout) <-chan Tout {
 // # Usages
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
-//	output := Map(input, func(value int) string {
+//	output := Map(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
-//	})
+//	}, input)
 //	// stdout: 2 1 3
 //	// output: ["val: 1", "val: 2", "val: 3"]
-func MapSync[Tin, Tout any](in <-chan Tin, mapper func(Tin) Tout) <-chan Tout {
+func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 	out := make(chan Tout, cap(in))
 	queue := make(chan func() <-chan Tout, cap(in))
 	wg := sync.WaitGroup{}
@@ -115,13 +115,13 @@ func MapSync[Tin, Tout any](in <-chan Tin, mapper func(Tin) Tout) <-chan Tout {
 // # Usages
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
-//	output := Map(input, func(value int) string {
+//	output := Map(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
-//	})
+//	}, input)
 //	// stdout: 1 2 3
 //	// output: ["val: 1", "val: 2", "val: 3"]
-func MapSequential[Tin, Tout any](in <-chan Tin, mapper func(Tin) Tout) <-chan Tout {
+func MapSequential[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 	out := make(chan Tout, cap(in))
 
 	go func() {
