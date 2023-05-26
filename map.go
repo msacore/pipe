@@ -15,10 +15,12 @@ import "sync"
 // # Usages
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
+//
 //	output := Map(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
 //	}, input)
+//
 //	// stdout: 2 1 3
 //	// output: ["val: 2", "val: 1", "val: 3"]
 func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
@@ -57,10 +59,12 @@ func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 // # Usages
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
+//
 //	output := Map(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
 //	}, input)
+//
 //	// stdout: 2 1 3
 //	// output: ["val: 1", "val: 2", "val: 3"]
 func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
@@ -115,10 +119,12 @@ func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 // # Usages
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
+//
 //	output := Map(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
 //	}, input)
+//
 //	// stdout: 1 2 3
 //	// output: ["val: 1", "val: 2", "val: 3"]
 func MapSequential[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
