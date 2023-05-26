@@ -99,6 +99,9 @@ Each function blocks current goroutine until channels closing condition won't be
 
 `Wait(in chan T) chan struct{}` - Waits for the input channel is closed and sends a signal to the returned channel.
 
+<details> 
+  <summary>Usage examples</summary>
+
 ```go
 <-Wait(input1)
 select {
@@ -108,7 +111,12 @@ select {
 // Will executed after input1 closed and input2 or input3 closed
 ```
 
+</details>
+
 `WaitAll(in ...chan T) chan struct{}` - Waits for all input channels are closed, and sends a signal to the returned channel.
+
+<details> 
+  <summary>Usage examples</summary>
 
 ```go
 <-WaitAll(input1, input2)
@@ -119,7 +127,12 @@ select {
 <-Wait(input2)
 ```
 
+</details>
+
 `WaitAny(in ...chan T) chan struct{}` - Waits for one of the input channels are closes, and sends a signal to the returned channel. All other channels are read to the end in the background.
+
+<details> 
+  <summary>Usage examples</summary>
 
 ```go
 <-WaitAny(input1, input2)
@@ -131,6 +144,8 @@ select {
   case <-Wait(input2):
 }
 ```
+
+</details>
 
 ## :gear: Strategies
 
