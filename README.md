@@ -3,6 +3,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/msacore/pipe.svg)](https://pkg.go.dev/github.com/msacore/pipe)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/msacore/pipe)](go.mod)
 [![License MIT](https://img.shields.io/github/license/msacore/pipe)](LICENSE)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/msacore/pipe)](https://github.com/msacore/pipe/releases)
 [![Go Report](https://goreportcard.com/badge/github.com/overred/xout)](https://goreportcard.com/report/github.com/overred/xout)
 
 <!-- Inner Badges Links -->
