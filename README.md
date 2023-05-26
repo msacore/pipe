@@ -42,13 +42,10 @@ Build multithread tools easily.
 
 ![Map](assets/methods/map.svg)
 
-:arrows_counterclockwise:
 [![Parallel]](#parallel)
 [![Sync]](#sync)
 [![Sequential]](#sequential)
-:lock:
 [![Single]](#single)
-:package:
 [![Same]](#same)
 
 Take message and convert it into another type by map function.
