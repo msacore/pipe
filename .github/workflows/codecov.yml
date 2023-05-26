@@ -14,5 +14,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Upload coverage reports to Codecov
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18'
+      - name: Run coverage
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
