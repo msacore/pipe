@@ -92,6 +92,46 @@ output := MapSequential(func(value int) string {
 
 </details>
 
+### [Wait](wait.go)
+
+Here are 3 helper functions that are waiting for the channels to close.
+Each function blocks current goroutine until channels closing condition won't be done.
+
+`Wait(in chan T) chan struct{}` - Waits for the input channel is closed and sends a signal to the returned channel.
+
+```go
+<-Wait(input1)
+select {
+  case <-Wait(input2):
+  case <-Wait(input3):
+}
+// Will executed after input1 closed and input2 or input3 closed
+```
+
+`WaitAll(in ...chan T) chan struct{}` - Waits for all input channels are closed, and sends a signal to the returned channel.
+
+```go
+<-WaitAll(input1, input2)
+// Will executed after input1 AND input2 closed
+
+// It's equal:
+<-Wait(input1)
+<-Wait(input2)
+```
+
+`WaitAny(in ...chan T) chan struct{}` - Waits for one of the input channels are closes, and sends a signal to the returned channel. All other channels are read to the end in the background.
+
+```go
+<-WaitAny(input1, input2)
+// Will executed after input1 OR input2 closed
+
+// It's equal:
+select {
+  case <-Wait(input1):
+  case <-Wait(input2):
+}
+```
+
 ## :gear: Strategies
 
 Each function has own set of strategies from all categories.
