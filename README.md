@@ -1,3 +1,12 @@
+<!-- Badges -->
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/msacore/pipe.svg)](https://pkg.go.dev/github.com/msacore/pipe)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/msacore/pipe)](go.mod)
+[![License MIT](https://img.shields.io/github/license/msacore/pipe)](LICENSE)
+[![Go Report](https://goreportcard.com/badge/github.com/overred/xout)](https://goreportcard.com/report/github.com/overred/xout)
+
+<!-- Inner Badges Links -->
+
 [Parallel]: assets/strategies/parallel.svg
 [Sync]: assets/strategies/sync.svg
 [Sequential]: assets/strategies/sequential.svg
@@ -11,6 +20,8 @@
 [Min]: assets/strategies/min.svg
 [Max]: assets/strategies/max.svg
 [Sum]: assets/strategies/sum.svg
+
+<!-- README -->
 
 # pipe
 
@@ -266,3 +277,8 @@ If input channel is closed then all output channels are closed.
 Creates new channel with the same capacity as input.
 
 </details>
+
+## Links
+
+- [🐞 Bug report](https://github.com/msacore/pipe/issues/new?assignees=jkulvich&labels=bug&projects=&template=%F0%9F%90%9E-bug-report.md&title=%5BBUG%5D)
+- [⭐️ Feature request](https://github.com/msacore/pipe/issues/new?assignees=jkulvich&labels=enhancement&projects=&template=%E2%AD%90%EF%B8%8F-feature-request.md&title=%E2%AD%90%EF%B8%8F+%5BFEATURE%5D%3A+)
