@@ -128,13 +128,6 @@ func WatchSequential[T any](in <-chan T, callback func(T)) <-chan T {
 }
 
 // Wait is terminate function. It will block current goroutine until input channel is closed.
-func Wait[T any](in <-chan T) {
-	for {
-		if _, ok := <-in; !ok {
-			break
-		}
-	}
-}
 
 // func Generate[T any](generator func() (T, bool)) <-chan T {
 // }
