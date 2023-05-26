@@ -79,6 +79,7 @@ func WaitAny[T any](in ...<-chan T) <-chan struct{} {
 			}()
 		}
 		<-queue
+		q <- struct{}{}
 	}()
 	return q
 }
