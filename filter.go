@@ -1,8 +1,10 @@
 package pipe
 
-import "sync"
+import (
+	"sync"
+)
 
-// Map takes message and converts it into another type by map function.
+// Filter takes message and forwards it if filter function return positive.
 // If input channel is closed then output channel is closed.
 // Creates a new channel with the same capacity as input.
 //
@@ -14,17 +16,17 @@ import "sync"
 //
 // # Usages
 //
-//	// input := make(chan int, 4) with random values [1, 2, 3]
+//	// input := make(chan int, 4) with random values [1, 2, 3, 4]
 //
-//	output := Map(func(value int) string {
-//	    fmt.Print(value)
-//	    return fmt.Sprintf("val: %d", value)
+//	output := Filter(func(value int) bool {
+//		fmt.Print(value)
+//	    return value % 2 == 0
 //	}, input)
 //
-//	// stdout: 2 1 3
-//	// output: ["val: 2", "val: 1", "val: 3"]
-func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
-	out := make(chan Tout, cap(in))
+//	// stdout: 4 1 2 3
+//	// output: [4 2]
+func Filter[T any](filter func(T) bool, in <-chan T) <-chan T {
+	out := make(chan T, cap(in))
 	wg := sync.WaitGroup{}
 
 	go func() {
@@ -32,7 +34,9 @@ func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 			if in, ok := <-in; ok {
 				wg.Add(1)
 				go func() {
-					out <- mapper(in)
+					if filter(in) {
+						out <- in
+					}
 					wg.Done()
 				}()
 			} else {
@@ -46,9 +50,11 @@ func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 	return out
 }
 
-// MapSync takes message and converts it into another type by map function.
+// FilterSync takes message and forwards it if filter function return positive.
 // If input channel is closed then output channel is closed.
 // Creates a new channel with the same capacity as input.
+//
+// WARNING: DEADLOCK DETECTED BY TESTS
 //
 // # Strategies
 //
@@ -58,28 +64,30 @@ func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 //
 // # Usages
 //
-//	// input := make(chan int, 4) with random values [1, 2, 3]
+//	// input := make(chan int, 4) with random values [1, 2, 3, 4]
 //
-//	output := Map(func(value int) string {
-//	    fmt.Print(value)
-//	    return fmt.Sprintf("val: %d", value)
+//	output := Filter(func(value int) bool {
+//		fmt.Print(value)
+//	    return value % 2 == 0
 //	}, input)
 //
-//	// stdout: 2 1 3
-//	// output: ["val: 1", "val: 2", "val: 3"]
-func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
-	out := make(chan Tout, cap(in))
-	queue := make(chan func() <-chan Tout, cap(in))
+//	// stdout: 4 1 2 3
+//	// output: [2 4]
+func FilterSync[T any](filter func(T) bool, in <-chan T) <-chan T {
+	out := make(chan T, cap(in))
+	queue := make(chan func() <-chan T, cap(in))
 	wg := sync.WaitGroup{}
 
 	go func() {
 		for {
 			if in, ok := <-in; ok {
 				wg.Add(1)
-				queue <- func() <-chan Tout {
-					out := make(chan Tout)
+				queue <- func() <-chan T {
+					out := make(chan T)
 					go func() {
-						out <- mapper(in)
+						if filter(in) {
+							out <- in
+						}
 						close(out)
 						wg.Done()
 					}()
@@ -109,7 +117,7 @@ func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 	return out
 }
 
-// MapSequential takes message and converts it into another type by map function.
+// FilterSequential takes message and forwards it if filter function return positive.
 // If input channel is closed then output channel is closed.
 // Creates a new channel with the same capacity as input.
 //
@@ -121,22 +129,24 @@ func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 //
 // # Usages
 //
-//	// input := make(chan int, 4) with random values [1, 2, 3]
+//	// input := make(chan int, 4) with random values [1, 2, 3, 4]
 //
-//	output := Map(func(value int) string {
-//	    fmt.Print(value)
-//	    return fmt.Sprintf("val: %d", value)
+//	output := Filter(func(value int) bool {
+//		fmt.Print(value)
+//	    return value % 2 == 0
 //	}, input)
 //
-//	// stdout: 1 2 3
-//	// output: ["val: 1", "val: 2", "val: 3"]
-func MapSequential[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
-	out := make(chan Tout, cap(in))
+//	// stdout: 1 2 3 4
+//	// output: [2 4]
+func FilterSequential[T any](filter func(T) bool, in <-chan T) <-chan T {
+	out := make(chan T, cap(in))
 
 	go func() {
 		for {
 			if in, ok := <-in; ok {
-				out <- mapper(in)
+				if filter(in) {
+					out <- in
+				}
 			} else {
 				close(out)
 				break

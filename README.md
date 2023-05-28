@@ -92,6 +92,60 @@ output := MapSequential(func(value int) string {
 
 </details>
 
+### Filter
+
+![Filter](assets/methods/filter.svg)
+
+[![Parallel]](#parallel)
+[![Sync]](#sync)
+[![Sequential]](#sequential)
+[![Single]](#single)
+[![Same]](#same)
+
+Take message and forward it if filter function return positive.
+If input channel is closed then output channel is closed.
+Creates a new channel with the same capacity as input.
+
+<details> 
+  <summary>Usage examples</summary>
+
+```go
+// input := make(chan int, 4) with random values.
+// Say, the input contains [1, 2, 3, 4]
+
+// Parallel strategy
+// Best performance (Multiple goroutines)
+
+output := Filter(func(value int) bool {
+  fmt.Print(value)
+    return value % 2 == 0
+}, input)
+// stdout: 4 1 2 3
+// output: [4 2]
+
+// Sync strategy
+// Consistent ordering (Multiple goroutines with sequential output)
+
+output := Filter(func(value int) bool {
+  fmt.Print(value)
+    return value % 2 == 0
+}, input)
+// stdout: 4 1 2 3
+// output: [2 4]
+
+// Sequential strategy
+// Preventing thread race (Single goroutine)
+
+output := Filter(func(value int) bool {
+  fmt.Print(value)
+    return value % 2 == 0
+}, input)
+// stdout: 1 2 3 4
+// output: [2 4]
+```
+
+</details>
+
 ### [Wait](wait.go)
 
 Here are 3 helper functions that are waiting for the channels to close.
@@ -223,19 +277,6 @@ The output channels will have a capacity equal to the sum of capacities of the i
 
 <details> 
   <summary><b>Under Construction</b></summary>
-
-### Filter
-
-> **Warning**  
-> This function under construction
-
-![Filter](assets/methods/filter.svg)
-
-![Parallel] ![Sync] ![Sequential] ![Single] ![Same]
-
-Take message and forward it if filter function return positive.
-If input channel is closed then output channel is closed.
-Creates a new channel with the same capacity as input.
 
 ### Split
 

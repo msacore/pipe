@@ -47,46 +47,6 @@ import "sync"
 
 // ========== DEV ========== //
 
-func Filter[T any](in <-chan T, filter func(T) bool) <-chan T {
-	out := make(chan T, cap(in))
-	wg := sync.WaitGroup{}
-	go func() {
-		for {
-			if in, ok := <-in; ok {
-				wg.Add(1)
-				go func() {
-					if filter(in) {
-						out <- in
-					}
-					wg.Done()
-				}()
-			} else {
-				wg.Wait()
-				close(out)
-				break
-			}
-		}
-	}()
-	return out
-}
-
-func FilterSequential[T any](in <-chan T, filter func(T) bool) <-chan T {
-	out := make(chan T, cap(in))
-	go func() {
-		for {
-			if in, ok := <-in; ok {
-				if filter(in) {
-					out <- in
-				}
-			} else {
-				close(out)
-				break
-			}
-		}
-	}()
-	return out
-}
-
 // Watch calls callback for every item in sequence without ordering.
 func Watch[T any](in <-chan T, callback func(T)) <-chan T {
 	out := make(chan T, cap(in))
