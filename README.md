@@ -92,7 +92,7 @@ output := MapSequential(func(value int) string {
 
 </details>
 
-### Filter
+### [Filter](filter.go)
 
 ![Filter](assets/methods/filter.svg)
 
