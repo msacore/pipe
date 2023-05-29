@@ -54,8 +54,6 @@ func Filter[T any](filter func(T) bool, in <-chan T) <-chan T {
 // If input channel is closed then output channel is closed.
 // Creates a new channel with the same capacity as input.
 //
-// WARNING: DEADLOCK DETECTED BY TESTS
-//
 // # Strategies
 //
 //   - Processing: Sync
@@ -66,7 +64,7 @@ func Filter[T any](filter func(T) bool, in <-chan T) <-chan T {
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3, 4]
 //
-//	output := Filter(func(value int) bool {
+//	output := FilterSync(func(value int) bool {
 //		fmt.Print(value)
 //	    return value % 2 == 0
 //	}, input)
@@ -131,7 +129,7 @@ func FilterSync[T any](filter func(T) bool, in <-chan T) <-chan T {
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3, 4]
 //
-//	output := Filter(func(value int) bool {
+//	output := FilterSequential(func(value int) bool {
 //		fmt.Print(value)
 //	    return value % 2 == 0
 //	}, input)

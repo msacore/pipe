@@ -60,7 +60,7 @@ func Map[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
 //
-//	output := Map(func(value int) string {
+//	output := MapSync(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
 //	}, input)
@@ -123,7 +123,7 @@ func MapSync[Tin, Tout any](mapper func(Tin) Tout, in <-chan Tin) <-chan Tout {
 //
 //	// input := make(chan int, 4) with random values [1, 2, 3]
 //
-//	output := Map(func(value int) string {
+//	output := MapSequential(func(value int) string {
 //	    fmt.Print(value)
 //	    return fmt.Sprintf("val: %d", value)
 //	}, input)
