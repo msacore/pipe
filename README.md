@@ -126,7 +126,7 @@ output := Filter(func(value int) bool {
 // Sync strategy
 // Consistent ordering (Multiple goroutines with sequential output)
 
-output := Filter(func(value int) bool {
+output := FilterSync(func(value int) bool {
   fmt.Print(value)
     return value % 2 == 0
 }, input)
@@ -136,7 +136,7 @@ output := Filter(func(value int) bool {
 // Sequential strategy
 // Preventing thread race (Single goroutine)
 
-output := Filter(func(value int) bool {
+output := FilterSequential(func(value int) bool {
   fmt.Print(value)
     return value % 2 == 0
 }, input)
