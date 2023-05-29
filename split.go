@@ -1,6 +1,8 @@
 package pipe
 
-import "sync"
+import (
+	"sync"
+)
 
 // Split takes a number of output channels and input channel, and forwards the input
 // messages to all output channels.
@@ -95,9 +97,12 @@ func Split3[T any](in <-chan T) (out1, out2, out3 <-chan T) {
 //	// outs[1]: [   1, 2,    3]
 func SplitSync[T any](n int, in <-chan T) []<-chan T {
 	outs := make([]chan T, n)
-	queues := make([]chan func() <-chan T, cap(in))
 	for i := 0; i < n; i++ {
 		outs[i] = make(chan T, cap(in))
+	}
+	queues := make([]chan func() <-chan T, n)
+	for i := 0; i < n; i++ {
+		queues[i] = make(chan func() <-chan T, cap(in))
 	}
 	wg := sync.WaitGroup{}
 

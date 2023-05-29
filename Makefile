@@ -12,5 +12,5 @@ doc:
 .PHONY: doc
 
 test:
-	go test ./...
+	go test -timeout=10s ./...
 .PHONY: test

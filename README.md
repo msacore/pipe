@@ -146,6 +146,62 @@ output := FilterSequential(func(value int) bool {
 
 </details>
 
+### Split
+
+![Split](assets/methods/split.svg)
+
+[![Parallel]](#parallel)
+[![Sync]](#sync)
+[![Sequential]](#sequential)
+[![Single]](#single)
+[![Same]](#same)
+
+Split takes a number of output channels and input channel, and forwards the input
+messages to all output channels.
+There is no guarantee that the message will be sent to the output channels in the
+sequence in which they are provided.
+If input channel is closed then all output channels are closed.
+Creates new channels with the same capacity as input.
+
+<details> 
+  <summary>Usage examples</summary>
+
+```go
+// input := make(chan int, 4) with random values.
+// Say, the input contains [1, 2, 3, 4]
+
+// Parallel strategy
+// Best performance (Multiple goroutines)
+
+outs := Split(2, input)
+// The gaps demonstrate uneven recording in the channels
+// outs[0]: [2,    1, 3   ]
+// outs[1]: [   1, 3,    2]
+
+// Sync strategy
+// Consistent ordering (Multiple goroutines with sequential output)
+
+outs := SplitSync(2, input)
+// The gaps demonstrate uneven recording in the channels
+// outs[0]: [1,    2, 3   ]
+// outs[1]: [   1, 2,    3]
+
+// Sequential strategy
+// Preventing thread race (Single goroutine)
+
+outs := SplitSequential(2, input)
+// The gaps demonstrate uneven recording in the channels
+// outs[0]: [1,    2,    3   ]
+// outs[1]: [   1,    2,    3]
+
+// Also we have several shortcut functions like:
+
+out1, out2 := Split2(input)
+out1, out2, out3 := Split3(input)
+```
+
+</details>
+
 ### [Wait](wait.go)
 
 Here are 3 helper functions that are waiting for the channels to close.
@@ -277,19 +333,6 @@ The output channels will have a capacity equal to the sum of capacities of the i
 
 <details> 
   <summary><b>Under Construction</b></summary>
-
-### Split
-
-> **Warning**  
-> This function under construction
-
-![Split](assets/methods/split.svg)
-
-![Sequential] ![Single] ![Same]
-
-Take next message and forward to all output channels.
-If input channel is closed then all output channels are closed.
-Creates new channels with the same capacity as input.
 
 ### Spread
 
