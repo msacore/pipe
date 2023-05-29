@@ -4,7 +4,7 @@
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/msacore/pipe)](go.mod)
 [![License MIT](https://img.shields.io/github/license/msacore/pipe)](LICENSE)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/msacore/pipe)](https://github.com/msacore/pipe/releases)
-[![Go Report](https://goreportcard.com/badge/github.com/overred/xout)](https://goreportcard.com/report/github.com/overred/xout)
+[![Go Report](https://goreportcard.com/badge/github.com/msacore/pipe)](https://goreportcard.com/report/github.com/msacore/pipe)
 [![codecov](https://codecov.io/gh/msacore/pipe/branch/main/graph/badge.svg?token=E8OCREETC0)](https://codecov.io/gh/msacore/pipe)
 
 <!-- Inner Badges Links -->
@@ -146,7 +146,7 @@ output := FilterSequential(func(value int) bool {
 
 </details>
 
-### Split
+### [Split](split.go)
 
 ![Split](assets/methods/split.svg)
 
