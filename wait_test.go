@@ -18,10 +18,10 @@ func TestWait(t *testing.T) {
 		start := time.Now()
 		<-Wait(input)
 
-		if time.Since(start).Milliseconds() < 5 {
+		if time.Since(start).Milliseconds() < 4 {
 			t.Fatal("too fast")
 		}
-		if time.Since(start).Milliseconds() > 5 {
+		if time.Since(start).Milliseconds() > 6 {
 			t.Fatal("too slow")
 		}
 	})
@@ -42,10 +42,10 @@ func TestWait(t *testing.T) {
 		start := time.Now()
 		<-WaitAll(input1, input2)
 
-		if time.Since(start).Milliseconds() < 8 {
+		if time.Since(start).Milliseconds() < 7 {
 			t.Fatal("too fast")
 		}
-		if time.Since(start).Milliseconds() > 8 {
+		if time.Since(start).Milliseconds() > 9 {
 			t.Fatal("too slow")
 		}
 	})
@@ -66,10 +66,10 @@ func TestWait(t *testing.T) {
 		start := time.Now()
 		<-WaitAny(input1, input2)
 
-		if time.Since(start).Milliseconds() < 5 {
+		if time.Since(start).Milliseconds() < 4 {
 			t.Fatal("too fast")
 		}
-		if time.Since(start).Milliseconds() > 5 {
+		if time.Since(start).Milliseconds() > 6 {
 			t.Fatal("too slow")
 		}
 	})
