@@ -1,19 +1,23 @@
 package pipe
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/msacore/pipe/test"
 )
 
 func TestSplit(t *testing.T) {
+	const channelsCount = 10
+
 	t.Run("Parallel", func(t *testing.T) {
 		test.Suit(t, func(epipe chan error) ([]<-chan int, chan error) {
 			pipe := test.Generator(0, 64, 16)
 
-			pipes := Split(2, pipe)
-			pipes[0], epipe = test.AssertCount("count 1", pipes[0], epipe, 64)
-			pipes[1], epipe = test.AssertCount("count 2", pipes[1], epipe, 64)
+			pipes := Split(channelsCount, pipe)
+			for i := 0; i < channelsCount; i++ {
+				pipes[i], epipe = test.AssertCount(fmt.Sprintf("count %d", i), pipes[i], epipe, 64)
+			}
 
 			return pipes, epipe
 		})
@@ -23,11 +27,11 @@ func TestSplit(t *testing.T) {
 		test.Suit(t, func(epipe chan error) ([]<-chan int, chan error) {
 			pipe := test.Generator(0, 64, 16)
 
-			pipes := SplitSync(2, pipe)
-			pipes[0], epipe = test.AssertCount("count 1", pipes[0], epipe, 64)
-			pipes[0], epipe = test.AssertOrderAsc("ordering 1", pipes[0], epipe)
-			pipes[1], epipe = test.AssertCount("count 2", pipes[1], epipe, 64)
-			pipes[1], epipe = test.AssertOrderAsc("ordering 2", pipes[1], epipe)
+			pipes := SplitSync(channelsCount, pipe)
+			for i := 0; i < channelsCount; i++ {
+				pipes[i], epipe = test.AssertCount(fmt.Sprintf("count %d", i), pipes[i], epipe, 64)
+				pipes[i], epipe = test.AssertOrderAsc(fmt.Sprintf("ordering %d", i), pipes[i], epipe)
+			}
 
 			return pipes, epipe
 		})
@@ -37,11 +41,11 @@ func TestSplit(t *testing.T) {
 		test.Suit(t, func(epipe chan error) ([]<-chan int, chan error) {
 			pipe := test.Generator(0, 64, 16)
 
-			pipes := SplitSync(2, pipe)
-			pipes[0], epipe = test.AssertCount("count 1", pipes[0], epipe, 64)
-			pipes[0], epipe = test.AssertOrderAsc("ordering 1", pipes[0], epipe)
-			pipes[1], epipe = test.AssertCount("count 2", pipes[1], epipe, 64)
-			pipes[1], epipe = test.AssertOrderAsc("ordering 2", pipes[1], epipe)
+			pipes := SplitSequential(channelsCount, pipe)
+			for i := 0; i < channelsCount; i++ {
+				pipes[i], epipe = test.AssertCount(fmt.Sprintf("count %d", i), pipes[i], epipe, 64)
+				pipes[i], epipe = test.AssertOrderAsc(fmt.Sprintf("ordering %d", i), pipes[i], epipe)
+			}
 
 			return pipes, epipe
 		})
