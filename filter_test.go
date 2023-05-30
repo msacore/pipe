@@ -2,105 +2,55 @@ package pipe
 
 import (
 	"testing"
+
+	"github.com/msacore/pipe/test"
 )
 
 func TestFilter(t *testing.T) {
 	t.Run("Parallel", func(t *testing.T) {
-		const channelCapacity = 64
-		const dataCount = channelCapacity * 8
+		test.Suit(t, func(epipe chan error) ([]<-chan int, chan error) {
+			pipe := test.Generator(0, 64, 16)
 
-		input := make(chan int, channelCapacity)
-		go func() {
-			for i := 0; i < dataCount; i++ {
-				input <- i
-			}
-			close(input)
-		}()
+			pipe = Filter(func(val int) bool {
+				return val%2 == 0
+			}, pipe)
 
-		output := Filter(func(val int) bool {
-			return val%2 == 0
-		}, input)
+			pipe, epipe = test.AssertBool("validation", pipe, epipe, func(data int) bool { return data%2 == 0 })
+			pipe, epipe = test.AssertCount("count", pipe, epipe, 32)
 
-		count := 0
-		for val := range output {
-			count++
-			if val%2 != 0 {
-				t.Fatal("false positive filtration")
-			}
-		}
-
-		if count != dataCount/2 {
-			t.Fatal("not all data has been processed")
-		}
+			return []<-chan int{pipe}, epipe
+		})
 	})
 
 	t.Run("Sync", func(t *testing.T) {
-		const channelCapacity = 64
-		const dataCount = channelCapacity * 8
+		test.Suit(t, func(epipe chan error) ([]<-chan int, chan error) {
+			pipe := test.Generator(0, 64, 16)
 
-		input := make(chan int, channelCapacity)
-		go func() {
-			for i := 0; i < dataCount; i++ {
-				input <- i
-			}
-			close(input)
-		}()
+			pipe = FilterSync(func(val int) bool {
+				return val%2 == 0
+			}, pipe)
 
-		output := FilterSync(func(val int) bool {
-			return val%2 == 0
-		}, input)
+			pipe, epipe = test.AssertBool("validation", pipe, epipe, func(data int) bool { return data%2 == 0 })
+			pipe, epipe = test.AssertOrderAsc("ordering", pipe, epipe)
+			pipe, epipe = test.AssertCount("count", pipe, epipe, 32)
 
-		max := -1
-		count := 0
-		for val := range output {
-			count++
-			if val%2 != 0 {
-				t.Fatal("false positive filtration")
-			}
-			if val > max {
-				max = val
-			} else {
-				t.Fatal("the data order is broken")
-			}
-		}
-
-		if count != dataCount/2 {
-			t.Fatal("not all data has been processed")
-		}
+			return []<-chan int{pipe}, epipe
+		})
 	})
 
 	t.Run("Sequential", func(t *testing.T) {
-		const channelCapacity = 64
-		const dataCount = channelCapacity * 8
+		test.Suit(t, func(epipe chan error) ([]<-chan int, chan error) {
+			pipe := test.Generator(0, 64, 16)
 
-		input := make(chan int, channelCapacity)
-		go func() {
-			for i := 0; i < dataCount; i++ {
-				input <- i
-			}
-			close(input)
-		}()
+			pipe = FilterSequential(func(val int) bool {
+				return val%2 == 0
+			}, pipe)
 
-		output := FilterSequential(func(val int) bool {
-			return val%2 == 0
-		}, input)
+			pipe, epipe = test.AssertBool("validation", pipe, epipe, func(data int) bool { return data%2 == 0 })
+			pipe, epipe = test.AssertOrderAsc("ordering", pipe, epipe)
+			pipe, epipe = test.AssertCount("count", pipe, epipe, 32)
 
-		max := -1
-		count := 0
-		for val := range output {
-			count++
-			if val%2 != 0 {
-				t.Fatal("false positive filtration")
-			}
-			if val > max {
-				max = val
-			} else {
-				t.Fatal("the data order is broken")
-			}
-		}
-
-		if count != dataCount/2 {
-			t.Fatal("not all data has been processed")
-		}
+			return []<-chan int{pipe}, epipe
+		})
 	})
 }

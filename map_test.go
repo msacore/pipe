@@ -2,94 +2,52 @@ package pipe
 
 import (
 	"testing"
+
+	"github.com/msacore/pipe/test"
 )
 
 func TestMap(t *testing.T) {
 	t.Run("Parallel", func(t *testing.T) {
-		const channelCapacity = 64
-		const dataCount = channelCapacity * 8
+		test.Suit(t, func(epipe chan error) ([]<-chan float32, chan error) {
+			pipe := test.Generator(0, 64, 16)
 
-		input := make(chan int, channelCapacity)
-		go func() {
-			for i := 0; i < dataCount; i++ {
-				input <- i
-			}
-			close(input)
-		}()
+			pipe2 := Map(func(val int) float32 {
+				return float32(val)
+			}, pipe)
 
-		output := Map(func(val int) int32 {
-			return int32(val)
-		}, input)
+			pipe2, epipe = test.AssertCount("count", pipe2, epipe, 64)
 
-		checks := make([]bool, dataCount)
-		for val := range output {
-			checks[int(val)] = true
-		}
-
-		for _, check := range checks {
-			if !check {
-				t.Fatal("not all data has been processed")
-			}
-		}
+			return []<-chan float32{pipe2}, epipe
+		})
 	})
 
 	t.Run("Sync", func(t *testing.T) {
-		const channelCapacity = 64
-		const dataCount = channelCapacity * 8
+		test.Suit(t, func(epipe chan error) ([]<-chan float32, chan error) {
+			pipe := test.Generator(0, 64, 16)
 
-		input := make(chan int, channelCapacity)
-		go func() {
-			for i := 0; i < dataCount; i++ {
-				input <- i
-			}
-			close(input)
-		}()
+			pipe2 := MapSync(func(val int) float32 {
+				return float32(val)
+			}, pipe)
 
-		output := MapSync(func(val int) int32 {
-			return int32(val)
-		}, input)
+			pipe2, epipe = test.AssertOrderAsc("ordering", pipe2, epipe)
+			pipe2, epipe = test.AssertCount("count", pipe2, epipe, 64)
 
-		max := int32(-1)
-		for val := range output {
-			if val > max {
-				max = val
-			} else {
-				t.Fatal("the data order is broken")
-			}
-		}
-
-		if max < dataCount-1 {
-			t.Fatal("not all data has been processed")
-		}
+			return []<-chan float32{pipe2}, epipe
+		})
 	})
 
 	t.Run("Sequential", func(t *testing.T) {
-		const channelCapacity = 64
-		const dataCount = channelCapacity * 8
+		test.Suit(t, func(epipe chan error) ([]<-chan float32, chan error) {
+			pipe := test.Generator(0, 64, 16)
 
-		input := make(chan int, channelCapacity)
-		go func() {
-			for i := 0; i < dataCount; i++ {
-				input <- i
-			}
-			close(input)
-		}()
+			pipe2 := MapSequential(func(val int) float32 {
+				return float32(val)
+			}, pipe)
 
-		output := MapSequential(func(val int) int32 {
-			return int32(val)
-		}, input)
+			pipe2, epipe = test.AssertOrderAsc("ordering", pipe2, epipe)
+			pipe2, epipe = test.AssertCount("count", pipe2, epipe, 64)
 
-		max := int32(-1)
-		for val := range output {
-			if val > max {
-				max = val
-			} else {
-				t.Fatal("the data order is broken")
-			}
-		}
-
-		if max < dataCount-1 {
-			t.Fatal("not all data has been processed")
-		}
+			return []<-chan float32{pipe2}, epipe
+		})
 	})
 }
