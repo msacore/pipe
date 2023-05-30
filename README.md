@@ -36,6 +36,22 @@ Build multithread tools easily.
 - Thread safe
 - `io` and `lo` like syntax (Tee, Reduce, Map, etc) but concurrently
 
+## TODO
+
+| Function | Impl | Tests | Doc Comments | Doc Readme |
+|:---------|:----:|:-----:|:------------:|:----------:|
+| Map |✅|✅|✅|✅|
+| Filter |✅|✅|✅|✅|
+| Split |✅|✅|✅|✅|
+| ForEach | | | | |
+| Spread | | | | |
+| Join | | | | |
+| Merge | | | | |
+| Route | | | | |
+| Replicate | | | | |
+| Reduce | | | | |
+| Wait |✅|✅|✅|✅|
+
 ## :building_construction: Methods
 
 ### [Map](map.go)
