@@ -27,6 +27,9 @@
 
 # pipe
 
+> **Note**
+> Please, support this repository with a ⭐️ if you like the concept and would like to support the developer's motivation
+
 > **Warning**  
 > This module under rapid development
 
