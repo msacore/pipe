@@ -55,6 +55,59 @@ Build multithread tools easily.
 | Reduce | | | | |
 | Wait |✅|✅|✅|✅|
 
+## :arrow_down_small: Installation
+
+This module powered by GO111MODULE and generics feature.
+So it supports Go 1.18 and upper.
+
+```bash
+go get -u github.com/msacore/pipe
+```
+
+## :joystick: Examples
+
+<details>
+  <summary>Welcome example</summary>
+
+[Open in playground](https://play.golang.com/p/9hQidaDDBTF)
+
+```go
+package main
+
+import (
+  "fmt"
+  "github.com/msacore/pipe"
+)
+
+func main() {
+  // Initial inputs
+  nums := make(chan int, 4)
+
+  // Generator
+  go func() {
+    for i := 0; i < 8; i++ {
+      nums <- i
+    }
+    close(nums)
+  }()
+
+  // Processor
+  filtered := pipe.Filter(func (value int) bool {
+    return value % 2 == 0
+  }, nums)
+  strs := pipe.Map(func(value int) string {
+    return fmt.Sprintf("%d", value)
+  }, filtered)
+
+  // Consumer
+  for str := range strs {
+    fmt.Println(str)
+  }
+}
+```
+
+</details>
+
 ## :building_construction: Methods
 
 ### [Map](map.go)
